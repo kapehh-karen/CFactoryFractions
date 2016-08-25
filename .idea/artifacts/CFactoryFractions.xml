@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="CFactoryFractions">
+    <output-path>$PROJECT_DIR$/out/artifacts/CFactoryFractions</output-path>
+    <root id="archive" name="CFactoryFractions.jar">
+      <element id="module-output" name="CFactoryFractions" />
+      <element id="file-copy" path="$PROJECT_DIR$/plugin.yml" />
+    </root>
+  </artifact>
+</component>
