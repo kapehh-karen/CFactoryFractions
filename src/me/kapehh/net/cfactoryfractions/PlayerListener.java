@@ -40,11 +40,12 @@ public class PlayerListener implements Listener {
         boolean isTownOutcast = Main.permission.has(playerMayor, ListPerm.OUTCAST.toString());
         boolean isResHero = Main.permission.has(playerResident, ListPerm.HEROES.toString());
         boolean isResOutcast = Main.permission.has(playerResident, ListPerm.OUTCAST.toString());
-        boolean isCorrect = (isTownHero && isResHero) || (isTownOutcast && isResOutcast);
+        boolean isResAdmin = Main.permission.has(playerResident, ListPerm.ADMIN.toString());
+        boolean isCorrect = isResAdmin || (isTownHero && isResHero) || (isTownOutcast && isResOutcast);
 
         if (!isCorrect) {
-            playerMayor.sendMessage(ChatColor.RED + "Запрещено инвайтить игроков из противоположной фракции!");
-            playerResident.sendMessage(ChatColor.RED + "Вы не можете вступить в город противоположной фракции!");
+            playerMayor.sendMessage(ConfigParam.MESSAGE_MAYOR);
+            playerResident.sendMessage(ConfigParam.MESSAGE_RESIDENT);
             try {
                 event.getTown().removeResident(resident);
             } catch (Exception e) {

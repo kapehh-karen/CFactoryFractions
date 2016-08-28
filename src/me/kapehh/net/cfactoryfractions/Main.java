@@ -14,21 +14,12 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class Main extends JavaPlugin {
     public static Permission permission;
-/*    private PluginConfig pluginConfig;
 
     @EventPluginConfig(EventType.LOAD)
-    public void onLoadConfig(FileConfiguration cfg) {
-        ConfigParam.HEROUES_PREFiX = pluginConfig.getColoredText("heroes-prefix");
-        ConfigParam.OUTCAST_PREFiX = pluginConfig.getColoredText("outcast-prefix");
-        ConfigParam.NONAME_PREFiX = pluginConfig.getColoredText("noname-prefix");
+    public void onLoadConfig(PluginConfig pc, FileConfiguration cfg) {
+        ConfigParam.MESSAGE_MAYOR = pc.getColoredText("message-mayor");
+        ConfigParam.MESSAGE_RESIDENT = pc.getColoredText("message-resident");
     }
-
-    @EventPluginConfig(EventType.DEFAULT)
-    public void onDefaultConfig(FileConfiguration cfg) {
-        cfg.set("heroes-prefix", "&e");
-        cfg.set("outcast-prefix", "&c");
-        cfg.set("noname-prefix", "&7");
-    }*/
 
     @Override
     public void onEnable() {
@@ -40,8 +31,10 @@ public class Main extends JavaPlugin {
 
         permission = PluginVault.setupPermissions();
 
-        /*pluginConfig = new PluginConfig(this, "config");
-        pluginConfig.addEventClasses(this).setup();*/
+        PluginConfig pluginConfig = new PluginConfig(this, "config");
+        pluginConfig.addDefault("message-mayor", "&cForbidden invite players from the opposing faction!")
+                    .addDefault("message-resident", "&cYou can't join to town opposite faction!");
+        pluginConfig.setEventListeners(this).setup();
 
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
     }
