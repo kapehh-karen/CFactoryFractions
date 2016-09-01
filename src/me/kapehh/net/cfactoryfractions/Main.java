@@ -17,8 +17,8 @@ public class Main extends JavaPlugin {
 
     @EventPluginConfig(EventType.LOAD)
     public void onLoadConfig(PluginConfig pc, FileConfiguration cfg) {
-        ConfigParam.MESSAGE_MAYOR = pc.getColoredText("message-mayor");
         ConfigParam.MESSAGE_RESIDENT = pc.getColoredText("message-resident");
+        ConfigParam.DEBUG = cfg.getBoolean("debug");
     }
 
     @Override
@@ -32,8 +32,8 @@ public class Main extends JavaPlugin {
         permission = PluginVault.setupPermissions();
 
         PluginConfig pluginConfig = new PluginConfig(this, "config");
-        pluginConfig.addDefault("message-mayor", "&cForbidden invite players from the opposing faction!")
-                    .addDefault("message-resident", "&cYou can't join to town opposite faction!");
+        pluginConfig.addDefault("message-resident", "&cYou can't join to town opposite faction!")
+                    .addDefault("debug", false);
         pluginConfig.setEventListeners(this).setup();
 
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);

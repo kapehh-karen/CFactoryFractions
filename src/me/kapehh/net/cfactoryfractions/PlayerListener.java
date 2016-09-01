@@ -7,11 +7,14 @@ import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import java.util.UUID;
 
 /**
  * Created by karen on 25.08.2016.
@@ -33,18 +36,25 @@ public class PlayerListener implements Listener {
         if (mayor == null || mayor.isNPC()) return;
 
         Player playerResident = Bukkit.getPlayer(resident.getName());
-        Player playerMayor = Bukkit.getPlayer(mayor.getName());
+        OfflinePlayer playerMayor = Bukkit.getOfflinePlayer(mayor.getName());
         if (playerResident == null || playerMayor == null) return;
 
-        boolean isTownHero = Main.permission.has(playerMayor, ListPerm.HEROES.toString());
-        boolean isTownOutcast = Main.permission.has(playerMayor, ListPerm.OUTCAST.toString());
+        boolean isTownHero = Main.permission.playerHas(null, playerMayor, ListPerm.HEROES.toString());
+        boolean isTownOutcast = Main.permission.playerHas(null, playerMayor, ListPerm.OUTCAST.toString());
+        boolean isTownAdmin = Main.permission.playerHas(null, playerMayor, ListPerm.ADMIN.toString());
         boolean isResHero = Main.permission.has(playerResident, ListPerm.HEROES.toString());
         boolean isResOutcast = Main.permission.has(playerResident, ListPerm.OUTCAST.toString());
         boolean isResAdmin = Main.permission.has(playerResident, ListPerm.ADMIN.toString());
-        boolean isCorrect = isResAdmin || (isTownHero && isResHero) || (isTownOutcast && isResOutcast);
+        boolean isCorrect = isResAdmin || isTownAdmin || (isTownHero && isResHero) || (isTownOutcast && isResOutcast);
+
+        if (ConfigParam.DEBUG) {
+            System.out.println(String.format(
+                "TownAddResidentEvent - isCorrect: %b\nisTownHero: %b, isTownOutcast: %b, isResHero: %b, isResOutcast: %b, isResAdmin: %b | Mayor [%s] ID: %d\n",
+                isCorrect, isTownHero, isTownOutcast, isResHero, isResOutcast, isResAdmin, mayor.getName(), mayor.getUID()
+            ));
+        }
 
         if (!isCorrect) {
-            playerMayor.sendMessage(ConfigParam.MESSAGE_MAYOR);
             playerResident.sendMessage(ConfigParam.MESSAGE_RESIDENT);
             try {
                 event.getTown().removeResident(resident);
