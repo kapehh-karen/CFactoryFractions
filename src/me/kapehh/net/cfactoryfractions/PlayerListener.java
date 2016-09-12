@@ -1,10 +1,12 @@
 package me.kapehh.net.cfactoryfractions;
 
+import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.event.TownAddResidentEvent;
 import com.palmergames.bukkit.towny.exceptions.EmptyTownException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownyUniverse;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -14,6 +16,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+
 import java.util.UUID;
 
 /**
@@ -25,6 +29,33 @@ public class PlayerListener implements Listener {
     public void onEntityDamage(EntityDamageByEntityEvent event) {
         /*System.out.println("DAMAGER: " + event.getDamager().toString());
         System.out.println("ENTITY: " + event.getEntity().toString());*/
+    }
+
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+        boolean playerIsHero = Main.permission.has(player, ListPerm.HEROES.toString());;
+        boolean playerIsOutcast = Main.permission.has(player, ListPerm.OUTCAST.toString());
+        boolean playerWithoutTown = true;
+
+        try {
+            Resident resident = TownyUniverse.getDataSource().getResident(player.getName());
+            if (resident != null && !resident.isNPC()) {
+                playerWithoutTown = !resident.hasTown();
+            }
+        } catch (NotRegisteredException e) {
+            e.printStackTrace();
+        }
+
+        if (playerWithoutTown) {
+
+            if (playerIsHero) {
+                event.setRespawnLocation(ConfigParam.WORLD_HEROES.getSpawnLocation());
+            } else if (playerIsOutcast) {
+                event.setRespawnLocation(ConfigParam.WORLD_OUTCAST.getSpawnLocation());
+            }
+
+        }
     }
 
     @EventHandler

@@ -19,6 +19,21 @@ public class Main extends JavaPlugin {
     public void onLoadConfig(PluginConfig pc, FileConfiguration cfg) {
         ConfigParam.MESSAGE_RESIDENT = pc.getColoredText("message-resident");
         ConfigParam.DEBUG = cfg.getBoolean("debug");
+
+        String heroesWorldName = cfg.getString("spawn-world-heroes");
+        String outcastWorldName = cfg.getString("spawn-world-outcast");
+        ConfigParam.WORLD_HEROES = Bukkit.getWorld(heroesWorldName);
+        ConfigParam.WORLD_OUTCAST = Bukkit.getWorld(outcastWorldName);
+
+        if (ConfigParam.WORLD_HEROES == null) {
+            getLogger().warning("Heroes World '" + heroesWorldName + "' not found!");
+            ConfigParam.WORLD_HEROES = Bukkit.getWorlds().get(0);
+        }
+
+        if (ConfigParam.WORLD_OUTCAST == null) {
+            getLogger().warning("Outcast World '" + outcastWorldName + "' not found!");
+            ConfigParam.WORLD_OUTCAST = Bukkit.getWorlds().get(0);
+        }
     }
 
     @Override
@@ -33,6 +48,8 @@ public class Main extends JavaPlugin {
 
         PluginConfig pluginConfig = new PluginConfig(this, "config");
         pluginConfig.addDefault("message-resident", "&cYou can't join to town opposite faction!")
+                    .addDefault("spawn-world-heroes", "world_heroes")
+                    .addDefault("spawn-world-outcast", "world_outcast")
                     .addDefault("debug", false);
         pluginConfig.setEventListeners(this).setup();
 
