@@ -2,3 +2,4 @@ name: CFactoryFractions
 main: me.kapehh.net.cfactoryfractions.Main
 author: kapehh
 version: 1.0.0
+depend: ['Multiverse-Core']

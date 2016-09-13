@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
@@ -32,9 +33,15 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        if (Main.permission.has(event.getEntity(), ListPerm.NEWBIE.toString()))
+            event.setKeepInventory(true);
+    }
+
+    @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
-        boolean playerIsHero = Main.permission.has(player, ListPerm.HEROES.toString());;
+        boolean playerIsHero = Main.permission.has(player, ListPerm.HEROES.toString());
         boolean playerIsOutcast = Main.permission.has(player, ListPerm.OUTCAST.toString());
         boolean playerWithoutTown = true;
 

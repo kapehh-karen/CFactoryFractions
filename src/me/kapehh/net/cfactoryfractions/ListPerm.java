@@ -6,6 +6,7 @@ package me.kapehh.net.cfactoryfractions;
 public enum ListPerm {
     HEROES("cfactoryfractions.fraction.heroes"),
     OUTCAST("cfactoryfractions.fraction.outcast"),
+    NEWBIE("cfactoryfractions.fraction.newbie"),
     ADMIN("cfactoryfractions.admin");
 
     // -- enum class --
