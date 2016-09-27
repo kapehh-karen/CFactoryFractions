@@ -7,6 +7,7 @@ import org.bukkit.World;
  */
 public class ConfigParam {
     public static String MESSAGE_RESIDENT;
+    public static String MESSAGE_NO_PLAYERS_ONLINE;
     public static boolean DEBUG;
     public static World WORLD_HEROES;
     public static World WORLD_OUTCAST;

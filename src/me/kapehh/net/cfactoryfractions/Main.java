@@ -18,6 +18,7 @@ public class Main extends JavaPlugin {
     @EventPluginConfig(EventType.LOAD)
     public void onLoadConfig(PluginConfig pc, FileConfiguration cfg) {
         ConfigParam.MESSAGE_RESIDENT = pc.getColoredText("message-resident");
+        ConfigParam.MESSAGE_NO_PLAYERS_ONLINE = pc.getColoredText("message-no-online-in-town");
         ConfigParam.DEBUG = cfg.getBoolean("debug");
 
         String heroesWorldName = cfg.getString("spawn-world-heroes");
@@ -48,6 +49,7 @@ public class Main extends JavaPlugin {
 
         PluginConfig pluginConfig = new PluginConfig(this, "config");
         pluginConfig.addDefault("message-resident", "&cYou can't join to town opposite faction!")
+                    .addDefault("message-no-online-in-town", "&cSorry, not players online in town")
                     .addDefault("spawn-world-heroes", "world_heroes")
                     .addDefault("spawn-world-outcast", "world_outcast")
                     .addDefault("debug", false);
